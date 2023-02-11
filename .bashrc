@@ -56,7 +56,8 @@ alias llh="ls -alFh"
 alias ll="ls -alF"
 alias l="ls -aF"
 alias kpdo="keep_doing"
-alias kpx="keep_executing"alias mongod="mongod --dbpath=/Users/vahan.sahakyan/data/db"
+alias kpx="keep_executing"
+alias mongod="mongod --dbpath=/Users/vahan.sahakyan/data/db"
 
 export PATH=/usr/local/bin:$PATH
 export PATH=~/scripts:$PATH
