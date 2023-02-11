@@ -5,6 +5,7 @@
 # PROMPT='%F{cyan}%n%f:~$'
 # PROMPT='%F{032}%n%f:%F{032}%~%f '
 
+
 # Load version control information
 autoload -Uz vcs_info
 precmd() { vcs_info }
