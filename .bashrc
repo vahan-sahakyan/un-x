@@ -51,7 +51,7 @@ function setps1() {
 
 PROMPT_COMMAND=setps1
 
-alias ls="ls -G"
+alias ls="ls --color=auto -G"
 alias llh="ls -alFh"
 alias ll="ls -alF"
 alias l="ls -aF"
