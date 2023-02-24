@@ -1,0 +1,78 @@
+#!/bin/bash
+# KEEP DOING
+myname=$(basename $0)
+if [ $# -lt 2 ];
+then
+    echo "Usage:"
+    echo "          $myname <action> <files> ..."
+    echo
+    exit 1
+fi
+
+ACTION=$1
+shift
+MONITORED_FILES=$@
+
+echo $myname: Watching the Files Bellow:
+i=0
+declare -a modification_dates
+for file in $MONITORED_FILES;
+do
+    echo "    $file"
+    if [ ! -f $file ];
+    then
+        echo "No such file: $file"
+        exit 1
+    fi
+    eval $(stat -s $file) # get all stat vars
+    modification_dates[$i]=$st_mtime # use one 
+    let i=$i+1
+done
+
+while [ true ];
+do
+    modification_detected=0
+    i=0
+
+    # Loop forEach file
+    for file in $MONITORED_FILES;
+    do
+        eval $(stat -s $file)   # get all stat vars
+        moddate=$st_mtime       # use one
+        if [ $moddate -gt ${modification_dates[$i]} ];
+        then
+            echo "$myname: MODIFIED: $file "
+            echo "|||||||||||||||||||||||||||||||||||"
+            echo "-----------------------------------"
+            echo
+            modification_detected=1
+            modification_dates[$i]=$moddate
+
+            # # COMMENT TOGGLE 1
+            # # START react/run forEach SEPERATE
+            # (eval $file)
+            # echo
+            # echo "-----------------------------------"
+            # echo "|||||||||||||||||||||||||||||||||||"
+            # echo $myname: waiting...
+            # # END react/run forEach SEPERATE
+        fi;
+        let i=$i+1
+    done
+
+    # COMMENT TOGGLE 2
+    # START specified $ACTION 
+    # (regardless which file changed)
+    if [ $modification_detected == 1 ];
+    then
+        (eval $ACTION)
+        echo
+        echo "-----------------------------------"
+        echo "|||||||||||||||||||||||||||||||||||"
+        echo $myname: waiting...
+    fi
+    # END specified $ACTION 
+    # (regardless which file changed)
+    sleep 1;
+
+done
