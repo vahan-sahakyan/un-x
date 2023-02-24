@@ -1,2 +1,2 @@
 # UN-X
-###### ⚙️ a container repository for unix-like system config files
+##### 🛠️ config files for unix-like systems
