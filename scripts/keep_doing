@@ -1,5 +1,14 @@
 #!/bin/bash
-# KEEP DOING
+
+###--------------------------------------###
+###  KEEP DOING (Shell Script)
+###  -- Hot Reload simulation for the cli
+###
+###  Author: @yenart - Yenokyan Artak
+###
+###  CUSTOMIZED VERSION
+###--------------------------------------###
+
 myname=$(basename $0)
 if [ $# -lt 2 ];
 then
