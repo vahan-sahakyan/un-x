@@ -42,9 +42,6 @@ do
         if [ $moddate -gt ${modification_dates[$i]} ];
         then
             echo "$myname: MODIFIED: $file "
-            echo "|||||||||||||||||||||||||||||||||||"
-            echo "-----------------------------------"
-            echo
             modification_detected=1
             modification_dates[$i]=$moddate
 
@@ -65,6 +62,10 @@ do
     # (regardless which file changed)
     if [ $modification_detected == 1 ];
     then
+        clear
+        echo "|||||||||||||||||||||||||||||||||||"
+        echo "-----------------------------------"
+        echo
         (eval $ACTION)
         echo
         echo "-----------------------------------"
