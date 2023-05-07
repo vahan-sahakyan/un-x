@@ -64,6 +64,9 @@ vim.opt.rtp:prepend(lazypath)
 --
 --  You can also configure plugins after the setup call,
 --    as they will be available in your neovim runtime.
+--
+
+
 require('lazy').setup({
   -- NOTE: First, some plugins that don't require any configuration
 
@@ -113,9 +116,32 @@ require('lazy').setup({
     },
   },
 
+  { -- Theme Monokai PRO
+    'loctvl842/monokai-pro.nvim',
+    priority = 1000,
+    config = function()
+      require("monokai-pro").setup {
+        transparent_background = true,
+        -- terminal_colors = true,
+        filter = "ristretto", -- classic | octagon | pro | machine | ristretto | spectrum
+        styles = {
+          comment = { italic = false },
+          keyword = { italic = false }, -- any other keyword
+          type = { italic = false }, -- (preferred) int, long, char, etc
+          storageclass = { italic = false }, -- static, register, volatile, etc
+          structure = { italic = false }, -- struct, union, enum, etc
+          parameter = { italic = false }, -- parameter pass in function
+          annotation = { italic = false },
+          tag_attribute = { italic = false }, -- attribute of tag in reactjs
+        },
+      }
+      vim.cmd.colorscheme 'monokai-pro'
+    end,
+  },
+
   { -- Theme inspired by Atom
     'navarasu/onedark.nvim',
-    priority = 1000,
+    priority = 10000,
     config = function()
       vim.cmd.colorscheme 'onedark'
     end,
@@ -127,7 +153,8 @@ require('lazy').setup({
     opts = {
       options = {
         icons_enabled = false,
-        theme = 'onedark',
+        -- theme = 'onedark',
+        theme = 'monokai-pro',
         component_separators = '|',
         section_separators = '',
       },
@@ -187,6 +214,7 @@ require('lazy').setup({
   --    to get rid of the warning telling you that there are not plugins in `lua/custom/plugins/`.
   -- { import = 'custom.plugins' },
 }, {})
+
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
@@ -319,7 +347,7 @@ vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { de
 -- See `:help nvim-treesitter`
 require('nvim-treesitter.configs').setup {
   -- Add languages to be installed here that you want installed for treesitter
-  ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'vimdoc', 'vim' },
+  ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'javascript', 'tsx', 'typescript', 'vimdoc', 'vim' },
 
   -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
   auto_install = false,
