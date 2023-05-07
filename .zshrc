@@ -5,7 +5,6 @@
 # PROMPT='%F{cyan}%n%f:~$'
 # PROMPT='%F{032}%n%f:%F{032}%~%f '
 
-
 # Load version control information
 autoload -Uz vcs_info
 precmd() { vcs_info }
@@ -54,11 +53,12 @@ PROMPT=$theme'${vcs_info_msg_0_}%f> '
 
 alias ls="ls -G"
 alias llh="ls -alFh"
-alias ll="ls -alF"
+alias ll="ls -alFg"
 alias l="ls -aF"
 alias kpdo="keep_doing"
 alias kpx="keep_executing"
 alias mongod="mongod --dbpath=/Users/vahan.sahakyan/data/db"
+alias vim="nvim"
 
 
 export PATH=/usr/local/bin:$PATH
@@ -69,3 +69,20 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 autoload -Uz compinit && compinit
+
+
+useclear() {
+  preexec () {
+    clear
+  }
+}
+
+# bun completions
+[ -s "/Users/vahan.sahakyan/.bun/_bun" ] && source "/Users/vahan.sahakyan/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+export PATH=${PATH}:/usr/local/mysql/bin/
+alias mysql="mysql -u root -p"
+alias findtext="find . -type f -exec cat {} "
