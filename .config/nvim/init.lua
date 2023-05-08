@@ -126,13 +126,13 @@ require('lazy').setup({
         filter = "ristretto", -- classic | octagon | pro | machine | ristretto | spectrum
         styles = {
           comment = { italic = false },
-          keyword = { italic = false }, -- any other keyword
-          type = { italic = false }, -- (preferred) int, long, char, etc
-          storageclass = { italic = false }, -- static, register, volatile, etc
-          structure = { italic = false }, -- struct, union, enum, etc
-          parameter = { italic = false }, -- parameter pass in function
-          annotation = { italic = false },
-          tag_attribute = { italic = false }, -- attribute of tag in reactjs
+          keyword = { italic = true }, -- any other keyword
+          type = { italic = true }, -- (preferred) int, long, char, etc
+          storageclass = { italic = true }, -- static, register, volatile, etc
+          structure = { italic = true }, -- struct, union, enum, etc
+          parameter = { italic = true }, -- parameter pass in function
+          annotation = { italic = true },
+          tag_attribute = { italic = true }, -- attribute of tag in reactjs
         },
       }
       vim.cmd.colorscheme 'monokai-pro'
@@ -274,14 +274,22 @@ vim.wo.wrap = true
 vim.cmd("syntax on")
 
 vim.g.mapleader = " "
-vim.api.nvim_set_keymap('n', '<leader>pv', ':Vex<CR>', { noremap = true })
-vim.api.nvim_set_keymap('n', '<leader><CR>', ':luafile ~/.config/nvim/init.lua<CR>', { noremap = true })
+vim.keymap.set('n', '<leader>pv', ':Vex<CR>', { noremap = true })
+vim.keymap.set('n', '<leader><CR>', ':luafile ~/.config/nvim/init.lua<CR>', { noremap = true })
 
 -- Move visually selected lines up or down in various modes.
-vim.api.nvim_set_keymap('n', 'K', ':m .-2<CR>==', { noremap = true })
-vim.api.nvim_set_keymap('n', 'J', ':m .+1<CR>==', { noremap = true })
-vim.api.nvim_set_keymap('v', 'K', ':m \'<-2<CR>gv=gv', { noremap = true })
-vim.api.nvim_set_keymap('v', 'J', ':m \'>+1<CR>gv=gv', { noremap = true })
+vim.keymap.set('n', 'K', ':m .-2<CR>==', { noremap = true })
+vim.keymap.set('n', 'J', ':m .+1<CR>==', { noremap = true })
+vim.keymap.set('v', 'K', ':m \'<-2<CR>gv=gv', { noremap = true })
+vim.keymap.set('v', 'J', ':m \'>+1<CR>gv=gv', { noremap = true })
+
+vim.keymap.set('n', 'X', 'dd', { noremap = true })
+
+vim.keymap.set('n', '<leader>sh', '<C-w>h', { noremap = true })
+vim.keymap.set('n', '<leader>sj', '<C-w>j', { noremap = true })
+vim.keymap.set('n', '<leader>sk', '<C-w>k', { noremap = true })
+vim.keymap.set('n', '<leader>sl', '<C-w>l', { noremap = true })
+
 
 ----------------------------------
 ----------------------------------
@@ -338,7 +346,7 @@ end, { desc = '[/] Fuzzily search in current buffer' })
 
 vim.keymap.set('n', '<leader>gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
 vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
-vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
+vim.keymap.set('n', '<leader>hh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
 vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
@@ -470,7 +478,15 @@ local servers = {
   -- gopls = {},
   -- pyright = {},
   -- rust_analyzer = {},
-  -- tsserver = {},
+  tsserver = {},
+  cssls = {},
+  bashls = {},
+  html = {},
+  jsonls = {},
+  vimls = {},
+  yamlls = {},
+  ccls = {},
+
 
   lua_ls = {
     Lua = {
