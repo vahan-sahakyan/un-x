@@ -65,7 +65,7 @@ vim.opt.rtp:prepend(lazypath)
 --  You can also configure plugins after the setup call,
 --    as they will be available in your neovim runtime.
 --
-
+vim.opt.list = true
 
 require('lazy').setup({
   -- NOTE: First, some plugins that don't require any configuration
@@ -95,6 +95,111 @@ require('lazy').setup({
     },
   },
 
+  -- ///////////////////////////////////
+  -- ///////////////////////////////////
+  -- ///////////////////////////////////
+  -- START FORMATTERS
+  {
+    'neovim/nvim-lspconfig',
+    'jose-elias-alvarez/null-ls.nvim',
+    'MunifTanjim/prettier.nvim',
+    config = function()
+      local null_ls = require("null-ls")
+
+      local group = vim.api.nvim_create_augroup("lsp_format_on_save", { clear = false })
+      local event = "BufWritePre" -- or "BufWritePost"
+      local async = event == "BufWritePost"
+
+      null_ls.setup({
+        on_attach = function(client, bufnr)
+          if client.supports_method("textDocument/formatting") then
+            vim.keymap.set("n", "<leader>f", function()
+              vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
+            end, { buffer = bufnr, desc = "[lsp] format" })
+
+            -- format on save
+            vim.api.nvim_clear_autocmds({ buffer = bufnr, group = group })
+            vim.api.nvim_create_autocmd(event, {
+              buffer = bufnr,
+              group = group,
+              callback = function()
+                vim.lsp.buf.format({ bufnr = bufnr, async = async })
+              end,
+              desc = "[lsp] format on save",
+            })
+          end
+
+          if client.supports_method("textDocument/rangeFormatting") then
+            vim.keymap.set("x", "<leader>f", function()
+              vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
+            end, { buffer = bufnr, desc = "[lsp] format" })
+          end
+        end,
+      })
+
+      local prettier = require("prettier")
+
+      prettier.setup({
+        bin = 'prettier', -- or `'prettierd'` (v0.23.3+)
+        filetypes = {
+          "css",
+          "graphql",
+          "html",
+          "javascript",
+          "javascriptreact",
+          "json",
+          "less",
+          "markdown",
+          "scss",
+          "typescript",
+          "typescriptreact",
+          "yaml",
+        },
+      })
+      prettier.setup({
+        ["null-ls"] = {
+          condition = function()
+            return prettier.config_exists({
+              -- if `false`, skips checking `package.json` for `"prettier"` key
+              check_package_json = true,
+            })
+          end,
+          runtime_condition = function(params)
+            -- return false to skip running prettier
+            return true
+          end,
+          timeout = 5000,
+        }
+      })
+      prettier.setup({
+        cli_options = {
+          arrow_parens = "always",
+          bracket_spacing = true,
+          bracket_same_line = false,
+          embedded_language_formatting = "auto",
+          end_of_line = "lf",
+          html_whitespace_sensitivity = "css",
+          -- jsx_bracket_same_line = false,
+          jsx_single_quote = false,
+          print_width = 80,
+          prose_wrap = "preserve",
+          quote_props = "as-needed",
+          semi = true,
+          single_attribute_per_line = false,
+          single_quote = false,
+          tab_width = 2,
+          trailing_comma = "es5",
+          use_tabs = false,
+          vue_indent_script_and_style = false,
+        },
+      })
+    end
+  },
+  -- END FORMATTERS
+  -- ///////////////////////////////////
+  -- ///////////////////////////////////
+  -- ///////////////////////////////////
+
   { -- Autocompletion
     'hrsh7th/nvim-cmp',
     dependencies = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' },
@@ -118,12 +223,12 @@ require('lazy').setup({
 
   { -- Theme Monokai PRO
     'loctvl842/monokai-pro.nvim',
-    priority = 1000,
+    priority = 10000,
     config = function()
       require("monokai-pro").setup {
         transparent_background = true,
         -- terminal_colors = true,
-        filter = "ristretto", -- classic | octagon | pro | machine | ristretto | spectrum
+        filter = "octagon", -- classic | octagon | pro | machine | ristretto | spectrum
         styles = {
           comment = { italic = false },
           keyword = { italic = false }, -- any other keyword
@@ -141,8 +246,32 @@ require('lazy').setup({
 
   { -- Theme inspired by Atom
     'navarasu/onedark.nvim',
-    priority = 10000,
+    priority = 1000,
     config = function()
+      require("onedark").setup {
+        transparent = true;
+
+        -- Main options
+        style = 'warmer',
+        term_colors = true,
+        eding_tildes = false,
+        cmp_itemkind_reverse = false,
+
+        -- toggle theme style --
+        toggle_style_key = nil,
+        toggle_style_list = {'dark','darker','cool','deep','warm','warmer','light'},
+
+        -- Change code style --
+        -- Options are italic, bold, underline, none
+        -- You can configure multiple style with comma seperated, For e.g., keywords = 'italic,bold'
+        code_style = {
+          comments = 'italic',
+          keywords = 'none',
+          functions = 'none',
+          strings = 'none',
+          variables = 'none'
+        },
+      }
       vim.cmd.colorscheme 'onedark'
     end,
   },
@@ -153,8 +282,8 @@ require('lazy').setup({
     opts = {
       options = {
         icons_enabled = false,
-        -- theme = 'onedark',
-        theme = 'monokai-pro',
+        theme = 'onedark',
+        -- theme = 'monokai-pro',
         component_separators = '|',
         section_separators = '',
       },
@@ -166,7 +295,7 @@ require('lazy').setup({
     -- Enable `lukas-reineke/indent-blankline.nvim`
     -- See `:help indent_blankline.txt`
     opts = {
-      char = '┊',
+      -- char = '┊',
       show_trailing_blankline_indent = false,
     },
   },
@@ -215,12 +344,16 @@ require('lazy').setup({
   -- { import = 'custom.plugins' },
 }, {})
 
+require("indent_blankline").setup {
+   show_current_context = true,
+   show_current_context_start = true,
+}
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
 
 -- Set highlight on search
-vim.o.hlsearch = false
+vim.o.hlsearch = true
 
 -- Make line numbers default
 vim.wo.number = true
@@ -267,6 +400,7 @@ vim.o.softtabstop = 4
 vim.o.shiftwidth = 4
 vim.o.expandtab = true
 vim.o.smarttab = true
+
 vim.wo.number = true
 vim.wo.relativenumber = true
 vim.o.scrolloff = 8
@@ -276,6 +410,11 @@ vim.cmd("syntax on")
 vim.g.mapleader = " "
 vim.keymap.set('n', '<leader>pv', ':Vex<CR>', { noremap = true })
 vim.keymap.set('n', '<leader><CR>', ':luafile ~/.config/nvim/init.lua<CR>', { noremap = true })
+vim.keymap.set('n', '<leader>f', ':Prettier<CR>', { noremap = true })
+vim.keymap.set('n', '<leader>m', ':Mason<CR>', { noremap = true })
+
+vim.keymap.set('n', '<C-j>', ' :cnext<CR>', { noremap = true })
+vim.keymap.set('n', '<C-k>', ' :cprev<CR>', { noremap = true })
 
 -- Move visually selected lines up or down in various modes.
 vim.keymap.set('n', 'K', ':m .-2<CR>==', { noremap = true })
@@ -283,12 +422,14 @@ vim.keymap.set('n', 'J', ':m .+1<CR>==', { noremap = true })
 vim.keymap.set('v', 'K', ':m \'<-2<CR>gv=gv', { noremap = true })
 vim.keymap.set('v', 'J', ':m \'>+1<CR>gv=gv', { noremap = true })
 
-vim.keymap.set('n', 'X', 'dd', { noremap = true })
+-- vim.keymap.set('n', 'X', 'dd', { noremap = true })
 
 vim.keymap.set('n', '<leader>sh', '<C-w>h', { noremap = true })
 vim.keymap.set('n', '<leader>sj', '<C-w>j', { noremap = true })
 vim.keymap.set('n', '<leader>sk', '<C-w>k', { noremap = true })
 vim.keymap.set('n', '<leader>sl', '<C-w>l', { noremap = true })
+
+
 
 
 ----------------------------------
@@ -321,6 +462,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 -- See `:help telescope` and `:help telescope.setup()`
 require('telescope').setup {
   defaults = {
+    file_ignore_patterns = {"node_modules"},
     mappings = {
       i = {
         ['<C-u>'] = false,
@@ -485,7 +627,7 @@ local servers = {
   jsonls = {},
   vimls = {},
   yamlls = {},
-  ccls = {},
+  -- ccls = {},
 
 
   lua_ls = {

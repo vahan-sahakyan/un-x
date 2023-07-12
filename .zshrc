@@ -32,8 +32,8 @@ GRAYSCALE_CYAN='%F{white}|%*|%f:%F{gray}%~/%F{cyan}'
 GRAYSCALE_BLUE='%F{white}|%*|%f:%F{gray}%~/%F{blue}'
 
 
-theme=$DEFAULT_THEME
-# theme=$GITHUB_THEME
+ theme=$DEFAULT_THEME
+ theme=$GITHUB_THEME
 # theme=$PINK_UNICORN
 # theme=$OCEAN_BLUE
 # theme=$FIRE_ORANGE
@@ -84,5 +84,9 @@ useclear() {
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 export PATH=${PATH}:/usr/local/mysql/bin/
+export PATH="/opt/homebrew/opt/postgresql@13/bin:$PATH"
+export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 alias mysql="mysql -u root -p"
 alias findtext="find . -type f -exec cat {} "
+alias till="tmux ls | awk 'BEGIN{FS=\":\"}!/attached/{print $1}' | xargs -n 1 tmux kill-ses -t"
+
