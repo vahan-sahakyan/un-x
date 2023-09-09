@@ -378,7 +378,7 @@ vim.keymap.set('n', '<C-j>', ' :cnext<CR>', { noremap = true })
 vim.keymap.set('n', '<C-k>', ' :cprev<CR>', { noremap = true })
 
 -- Move visually selected lines up or down in various modes.
-vim.keymap.set('n', 'K', ':m .-2<CR>==', { noremap = true })
+-- vim.keymap.set('n', 'K', ':m .-2<CR>==', { noremap = true })
 vim.keymap.set('n', 'J', ':m .+1<CR>==', { noremap = true })
 vim.keymap.set('v', 'K', ':m \'<-2<CR>gv=gv', { noremap = true })
 vim.keymap.set('v', 'J', ':m \'>+1<CR>gv=gv', { noremap = true })
