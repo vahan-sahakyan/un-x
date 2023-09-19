@@ -7,7 +7,10 @@ vim.g.maplocalleader = ' '
 -- Install package manager
 --    https://github.com/folke/lazy.nvim
 --    `:help lazy.nvim.txt` for more info
+local hl = vim.api.nvim_set_hl
+
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
+
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system {
     'git',
@@ -182,32 +185,106 @@ require('lazy').setup({
     },
   },
 
-  { -- Theme Monokai PRO
-    'loctvl842/monokai-pro.nvim',
-    priority = 10000,
+  {
+    "loctvl842/monokai-pro.nvim",
+    priority = 10,
     config = function()
-      require("monokai-pro").setup {
-        transparent_background = true,
-        -- terminal_colors = true,
-        filter = "octagon", -- classic | octagon | pro | machine | ristretto | spectrum
-        styles = {
-          comment = { italic = false },
-          keyword = { italic = false }, -- any other keyword
-          type = { italic = false }, -- (preferred) int, long, char, etc
-          storageclass = { italic = false }, -- static, register, volatile, etc
-          structure = { italic = false }, -- struct, union, enum, etc
-          parameter = { italic = false }, -- parameter pass in function
-          annotation = { italic = false },
-          tag_attribute = { italic = false }, -- attribute of tag in reactjs
-        },
+      local colors = require("monokai-pro.colorscheme.palette.octagon")
+      local base = {
+        dark = colors.dark2,
+        black = colors.dark1,
+        red = colors.accent1,
+        green = colors.accent4,
+        yellow = colors.accent3,
+        orange = colors.accent2,
+        magenta = colors.accent6,
+        cyan = colors.accent5,
+        white = colors.text,
+        dimmed1 = colors.dimmed1,
+        dimmed2 = colors.dimmed2,
+        dimmed3 = colors.dimmed3,
+        dimmed4 = colors.dimmed4,
+        dimmed5 = colors.dimmed5,
       }
+
+      require("monokai-pro").setup({
+        transparent_background = true,
+        filter = "octagon", -- classic | octagon | pro | machine | ristretto | spectrum
+        override = function()
+          return {
+            Structure = { fg = base.cyan, italic = false, },
+            Macro = { fg = base.cyan, italic = true, },
+
+            -- Treesitter
+            ["@keyword"] = { fg = base.red, },
+            
+            ["@keyword.coroutine"] = { fg = base.red, },
+            ["@keyword.operator"] = { fg = base.red, },
+            ["@repeat"] = { fg = base.red, },
+            ["@type.qualifier"] = { fg = base.red, },
+            ["@field"] = { fg = base.red, },
+
+            ["@type"] = { fg = base.cyan, },
+            ["@property"] = { fg = base.green, },
+            ["@parameter"] = { fg = base.orange, },
+
+            -- Semantic tokens
+            ["@lsp.mod.interpolation"] = { fg = base.orange, },
+            ["@lsp.type.annotation"] = { fg = base.cyan, italic = true, },
+            ["@lsp.type.parameter"] = { link = "@parameter", },
+            ["@lsp.typemod.class.defaultLibrary"] = { fg = base.green, },
+            ["@lsp.typemod.property.annotation"] = { fg = base.cyan, italic = true, },
+            ["@lsp.typemod.function.defaultLibrary"] = { fg = base.green, },
+            ["@lsp.typemod.parameter.declaration"] = { link = "@parameter", },
+            ["@lsp.typemod.variable.readonly"] = { fg = base.magenta, },
+
+            -- Language specific
+            ["@lsp.type.class.dart"] = { fg = base.cyan, italic = false, },
+            ["@type.python"] = { fg = base.cyan, },
+            ["@keyword.python"] = { link = "@keyword", },
+            ["@text.literal.markdown_inline"] = { fg = base.orange, italic = true, }
+          }
+        end,
+      })
+
+      -- Enable theme
       vim.cmd.colorscheme 'monokai-pro'
+
+      -- LspInfo floating window border color
+      hl(0, "LspInfoBorder", { fg = "white", })
+
+      -- NvimTree
+      hl(0, "NvimTreeNormalFloat", { fg = "white", })
+      hl(0, "NvimTreeFolderName", { fg = "white", })
+      hl(0, "NvimTreeOpenedFolderName", { fg = "white", italic = true, })
+
+      -- Leap
+      hl(0, "LeapLabelPrimary", { link = "IncSearch", })
+      hl(0, "LeapLabelSecondary", { fg = "#222222", bg = "#fd9353", bold = true, })
+
+      -- Telescope
+      hl(0, "TelescopeMatching", { link = "IncSearch", })
+      hl(0, "TelescopeSelectionCaret", { bg = "#363537", fg = "#7bd88f", bold = true, })
+      hl(0, "TelescopeResultsBorder", { fg = "white", })
+      hl(0, "TelescopePromptBorder", { fg = "white", })
+      hl(0, "TelescopePreviewBorder", { fg = "white", })
+      hl(0, "TelescopePromptNormal", { fg = "white", })
+      hl(0, "TelescopePromptPrefix", { fg = "#7bd88f", })
+      hl(0, "TelescopeResultsNormal", { fg = "white", })
+
+      -- Invisible characters highlight
+      hl(0, "Whitespace", { fg = "#626064", })
+      hl(0, "IndentBlanklineSpaceChar", { link = "Whitespace", })
+      hl(0, "NonText", { link = "Whitespace", })
+
+      -- Match paren
+      hl(0, "MatchParen", { fg = "#fce566", underline = true, bold = true, })
     end,
   },
 
   { -- Theme inspired by Atom
     'navarasu/onedark.nvim',
-    priority = 1000,
+    priority = 100,
     config = function()
       require("onedark").setup {
         transparent = true;
@@ -243,8 +320,8 @@ require('lazy').setup({
     opts = {
       options = {
         icons_enabled = false,
-        theme = 'onedark',
-        -- theme = 'monokai-pro',
+        -- theme = 'onedark',
+        theme = 'monokai-pro',
         component_separators = '|',
         section_separators = '',
       },
