@@ -59,6 +59,12 @@ alias kpdo="keep_doing"
 alias kpx="keep_executing"
 alias mongod="mongod --dbpath=/Users/vahan.sahakyan/data/db"
 alias vim="nvim"
+alias idea='open -a "`ls -dt /Applications/IntelliJ\ IDEA*|head -1`"'
+alias lld="ll | grep -E '/' --color"
+alias mysql="mysql -u root -p"
+alias findtext="find . -type f -exec cat {} "
+alias till="tmux ls | awk 'BEGIN{FS=\":\"}!/attached/{print $1}' | xargs -n 1 tmux kill-ses -t"
+
 
 
 export PATH=/usr/local/bin:$PATH
@@ -86,7 +92,3 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 export PATH=${PATH}:/usr/local/mysql/bin/
 export PATH="/opt/homebrew/opt/postgresql@13/bin:$PATH"
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
-alias mysql="mysql -u root -p"
-alias findtext="find . -type f -exec cat {} "
-alias till="tmux ls | awk 'BEGIN{FS=\":\"}!/attached/{print $1}' | xargs -n 1 tmux kill-ses -t"
-
