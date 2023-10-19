@@ -64,6 +64,7 @@ alias lld="ll | grep -E '/' --color"
 alias mysql="mysql -u root -p"
 alias findtext="find . -type f -exec cat {} "
 alias till="tmux ls | awk 'BEGIN{FS=\":\"}!/attached/{print $1}' | xargs -n 1 tmux kill-ses -t"
+# git config --global alias.hs "log --pretty='%C(yellow)%h %C(cyan)%cd %Cblue%aN%x09%x09 %Creset%s %C(auto)%d' --date=relative --date-order"
 
 
 
