@@ -33,8 +33,7 @@ do
         echo "No such file: $file"
         exit 1
     fi
-    eval $(stat -s $file) # get all stat vars
-    modification_dates[$i]=$st_mtime # use one 
+    modification_dates[$i]=$(stat -f "%m" $file)
     let i=$i+1
 done
 
@@ -46,8 +45,7 @@ do
     # Loop forEach file
     for file in $MONITORED_FILES;
     do
-        eval $(stat -s $file)   # get all stat vars
-        moddate=$st_mtime       # use one
+        moddate=$(stat -f "%m" $file) 
         if [ $moddate -gt ${modification_dates[$i]} ];
         then
             echo "$myname: MODIFIED: $file "

@@ -33,7 +33,7 @@ do
         echo "No such file: $file"
         exit 1
     fi
-    modification_dates[$i]=$(stat -s $file)
+    modification_dates[$i]=$(stat -c %Y $file)
     let i=$i+1
 done
 
@@ -45,7 +45,8 @@ do
     # Loop forEach file
     for file in $MONITORED_FILES;
     do
-        moddate=$(stat -s $file)
+        moddate=$(stat -c %Y $file)
+        if [ $moddate -gt ${modification_dates[$i]} ];
         then
             echo "$myname: MODIFIED: $file "
             modification_detected=1
