@@ -58,6 +58,12 @@ alias l="ls -aF"
 alias kpdo="keep_doing"
 alias kpx="keep_executing"
 alias mongod="mongod --dbpath=/Users/vahan.sahakyan/data/db"
+# git config --global alias.hs "log --pretty='%C(yellow)%h %C(cyan)%cd %Cblue%aN%x09%x09 %Creset%s %C(auto)%d' --date=relative --date-order"
+alias gs="git status"
+alias ghs="git hs"
+alias gb="git branch"
+alias gout="git checkout"
+alias gmit="git add -A; git commit"
 
 export PATH=/usr/local/bin:$PATH
 export PATH=~/scripts:$PATH
