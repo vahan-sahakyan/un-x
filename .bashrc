@@ -66,6 +66,14 @@ alias gb="git branch"
 alias gout="git checkout"
 alias gmit="git add -A; git commit"
 
+alias gset="git reset"
+alias gpush="git push origin HEAD"
+alias gpushf="git push origin +HEAD"
+alias gpull="git pull"
+alias npmccf="npm cache clean --force"
+
+alias yt="yarn start"
+
 export PATH=/usr/local/bin:$PATH
 export PATH=~/scripts:$PATH
 

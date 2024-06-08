@@ -51,10 +51,15 @@ GRAYSCALE_BLUE='%F{white}|%*|%f:%F{gray}%~/%F{blue}'
 
 PROMPT=$theme'${vcs_info_msg_0_}%f> '
 
+
+# alias ls="eza -a -F --sort=type"
+# alias ll="ls -lT --git --level=1 --no-user --time-style=relative"
+# alias l="ls"
+
 alias ls="ls -G"
-alias llh="ls -alFh"
 alias ll="ls -alFg"
 alias l="ls -aF"
+ 
 alias kpdo="keep_doing"
 alias kpx="keep_executing"
 alias mongod="mongod --dbpath=/Users/vahan.sahakyan/data/db"
@@ -72,6 +77,13 @@ alias gb="git branch"
 alias gout="git checkout"
 alias gmit="git add -A; git commit"
 
+alias gset="git reset"
+alias gpush="git push origin HEAD"
+alias gpushf="git push origin +HEAD"
+alias gpull="git pull"
+alias npmccf="npm cache clean --force"
+
+alias yt="yarn start"
 
 export PATH=/usr/local/bin:$PATH
 export PATH=~/scripts:$PATH
