@@ -51,8 +51,11 @@ function setps1() {
 
 PROMPT_COMMAND=setps1
 
+# alias ls="eza -a -F --sort=type"
+# alias ll="ls -lT --git --level=1 --no-user --time-style=relative"
+# alias l="ls"
+
 alias ls="ls --color=auto -G"
-alias llh="ls -alFh"
 alias ll="ls -alF"
 alias l="ls -aF"
 alias kpdo="keep_doing"
