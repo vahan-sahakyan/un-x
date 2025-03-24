@@ -274,7 +274,6 @@ require('lazy').setup({
 
       -- Invisible characters highlight
       hl(0, "Whitespace", { fg = "#626064", })
-      hl(0, "IndentBlanklineSpaceChar", { link = "Whitespace", })
       hl(0, "NonText", { link = "Whitespace", })
 
       -- Match paren
@@ -328,16 +327,6 @@ require('lazy').setup({
     },
   },
 
-  { -- Add indentation guides even on blank lines
-    'lukas-reineke/indent-blankline.nvim',
-    -- Enable `lukas-reineke/indent-blankline.nvim`
-    -- See `:help indent_blankline.txt`
-    opts = {
-      -- char = '┊',
-      show_trailing_blankline_indent = false,
-    },
-  },
-
   -- "gc" to comment visual regions/lines
   { 'numToStr/Comment.nvim', opts = {} },
 
@@ -382,10 +371,6 @@ require('lazy').setup({
   -- { import = 'custom.plugins' },
 }, {})
 
-require("indent_blankline").setup {
-   show_current_context = true,
-   show_current_context_start = true,
-}
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
@@ -662,14 +647,6 @@ local servers = {
   -- gopls = {},
   -- pyright = {},
   -- rust_analyzer = {},
-  tsserver = {},
-  cssls = {},
-  bashls = {},
-  html = {},
-  jsonls = {},
-  vimls = {},
-  yamlls = {},
-  prismals = {},
 
 
   lua_ls = {
