@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+git branch | grep $1 | head -n 1 | sed -e 's/[* | ]//g' | xargs git checkout
+

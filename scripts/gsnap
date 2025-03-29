@@ -1,0 +1,46 @@
+#!/bin/bash
+SLUG=$1
+
+if [ -z "$SLUG" ]; then
+  SLUG=""
+else
+  SLUG="-${SLUG}"
+fi
+
+
+append_string="-`git rev-parse head`${SLUG}-snapshot"
+echo "🔵 Append string: $append_string"
+
+package_name=$(jq -r '.name' package.json)
+echo "🔵 Package name: $package_name"
+
+current_version=$(jq -r '.version' package.json)
+echo "🔵 Previous version: $current_version"
+
+base_version=$(echo "$current_version" | sed -E 's/^([0-9]+\.[0-9]+\.[0-9]+).*/\1/')
+echo "🔵 Base version: $base_version"
+
+new_version="$base_version$append_string"
+echo "🔵 New version: $new_version"
+
+echo
+echo "💬 Copied to Clipboard: $package_name@$new_version"
+echo "$package_name@$new_version" | pbcopy
+
+if [[ "$current_version" == "$new_version" ]]; then
+  echo -e "\n🔘 Version already has the desired suffix '$append_string'. No changes made."
+  exit 0
+else
+  jq --arg new_version "$new_version" '.version = $new_version' package.json > temp.json && mv temp.json package.json
+  echo -e "\n🟢 Version updated to $new_version"
+fi
+
+# echo
+# echo "🔄 nvm use || nvm i"
+# echo
+# nvm use || nvm i
+
+echo
+echo "🔄 npm i"
+echo
+npm i
